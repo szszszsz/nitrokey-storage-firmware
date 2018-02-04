@@ -113,9 +113,14 @@ The debugger should now be available. Configure the debugging environment by fol
 
 Congratulations, your IDE should now be ready for debugging. Set breakpoints as needed and start a JTAG debugging session by pressing F11.
 
+**Note:** If your device doesn't leave the `trampoline` routine while debugging, this means that the device is in DFU mode and is waiting for new firmware. You can resolve this by either flashing the firmware through DFU as described above, or reprogram the bootloader as described below, but with `ISP_FORCE` and `ISP_IO_COND_EN` set to zero. In both cases the necessary fuses will be cleared and the device should now boot into the firmware.
+
 ### Defaulting to USB DFU
 If you accidentally erased the DFU bootloader from the chip or run into any trouble, the stick can always be reprogrammed like this:
 - In the "AVR Targets" dialog, right click on your JTAG debugger and select `Program Bootloader`
 - Leave all the entries in their default state and reprogram the bootloader by clicking `Finish`
 
-The device will now start in DFU mode and can be programmed as described above in the Firmware Upgrade Instructions
+The device will now start in DFU mode and can be programmed as described in the Firmware Upgrade Instructions
+
+[Firmware upgrade instructions](https://www.nitrokey.com/en/doc/firmware-update-storage)
+
