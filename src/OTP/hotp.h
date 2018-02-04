@@ -68,9 +68,12 @@ typedef enum
 
 
 /*
-   slot structure: 1b 0x01 if slot is used (programmed) 15b slot name 20b secret 1b configuration flags: MSB [x|x|x|x|x|send token id|send enter
-   after code?|no. of digits 6/8] LSB 12b token id 1b keyboard layout 2b TOTP interval value
-
+   slot structure:
+   1b 0x01 if slot is used (programmed)
+   15b slot name
+   20b secret
+   1b configuration flags: MSB [x|x|x|x|x|send token id|send enter after code?|no. of digits 6/8] LSB
+   12b token id 1b keyboard layout 2b TOTP interval value
  */
 
 #define SLOT_CONFIG_DIGITS 0
@@ -82,7 +85,9 @@ typedef enum
 /*
    global config slot:
 
-   1b slot sent after numlock 1b slot sent after caps lock 1b slot sent after scroll lock
+   1b slot sent after numlock
+   1b slot sent after caps lock
+   1b slot sent after scroll lock
 
  */
 
@@ -91,51 +96,53 @@ typedef enum
 #define SLOT_PAGE_SIZE  500 // less than actual page, so we can copy it to backup page with additional info
 
 #define FLASH_START            0x80000000
-#define OTP_FLASH_START_PAGE   500
-#define SLOTS_ADDRESS         (0x80000000 + OTP_FLASH_START_PAGE * FLASH_PAGE_SIZE + (512*0))   // 0x8003e800
-#define SLOT1_COUNTER_ADDRESS (0x80000000 + OTP_FLASH_START_PAGE * FLASH_PAGE_SIZE + (512*3))   // 0x8003
-#define SLOT2_COUNTER_ADDRESS (0x80000000 + OTP_FLASH_START_PAGE * FLASH_PAGE_SIZE + (512*4))   // 0x8003
-#define SLOT3_COUNTER_ADDRESS (0x80000000 + OTP_FLASH_START_PAGE * FLASH_PAGE_SIZE + (512*5))   // 0x8003
-#define BACKUP_PAGE_ADDRESS   (0x80000000 + OTP_FLASH_START_PAGE * FLASH_PAGE_SIZE + (512*6))   // (3 Pages) 0x8003
-#define TIME_ADDRESS          (0x80000000 + OTP_FLASH_START_PAGE * FLASH_PAGE_SIZE + (512*9))   //
+#define OTP_FLASH_START_PAGE   496
+#define SLOTS_ADDRESS         (FLASH_START + OTP_FLASH_START_PAGE * FLASH_PAGE_SIZE + (FLASH_PAGE_SIZE * 0))   // 0x8003e000
+#define SLOT1_COUNTER_ADDRESS (FLASH_START + OTP_FLASH_START_PAGE * FLASH_PAGE_SIZE + (FLASH_PAGE_SIZE * 5))   // 0x8003ea00
+#define SLOT2_COUNTER_ADDRESS (FLASH_START + OTP_FLASH_START_PAGE * FLASH_PAGE_SIZE + (FLASH_PAGE_SIZE * 6))   // 0x8003ec00
+#define SLOT3_COUNTER_ADDRESS (FLASH_START + OTP_FLASH_START_PAGE * FLASH_PAGE_SIZE + (FLASH_PAGE_SIZE * 7))   // 0x8003ee00
+#define BACKUP_PAGE_ADDRESS   (FLASH_START + OTP_FLASH_START_PAGE * FLASH_PAGE_SIZE + (FLASH_PAGE_SIZE * 8))   // 0x8003f000 (5 pages)
+#define TIME_ADDRESS          (FLASH_START + OTP_FLASH_START_PAGE * FLASH_PAGE_SIZE + (FLASH_PAGE_SIZE * 13))  // 0x8003fa00
 
-// OTP block = 3 flash blocks = 3*512 byte
-#define BACKUP_ADDRESS_OFFSET ((512 * 3) - 12)  // 500 - no flash block addr
-#define BACKUP_LENGTH_OFFSET  ((512 * 3) -  8)  // 504 - no flash block addr
-#define BACKUP_OK_OFFSET      ((512 * 3) -  6)  // 506 - no flash block addr
+// OTP block = 5 flash blocks = 5*512 byte
+#define BACKUP_ADDRESS_OFFSET ((FLASH_PAGE_SIZE * 5) - 12)  // 500 - no flash block addr
+#define BACKUP_LENGTH_OFFSET  ((FLASH_PAGE_SIZE * 5) -  8)  // 504 - no flash block addr
+#define BACKUP_OK_OFFSET      ((FLASH_PAGE_SIZE * 5) -  6)  // 506 - no flash block addr
 
-#define GLOBAL_CONFIG_OFFSET  (64 * 0)
+#define SLOT_SIZE		  128
+#define SECRET_LENGTH	  40
 
-#define HOTP_SLOT1_OFFSET     (64 * 1)
-#define HOTP_SLOT2_OFFSET     (64 * 2)
-#define HOTP_SLOT3_OFFSET     (64 * 3)
+#define GLOBAL_CONFIG_OFFSET  (SLOT_SIZE * 0)
 
-#define TOTP_SLOT1_OFFSET     ((64 * 4) + (64 *  0))
-#define TOTP_SLOT2_OFFSET     ((64 * 4) + (64 *  1))
-#define TOTP_SLOT3_OFFSET     ((64 * 4) + (64 *  2))
-#define TOTP_SLOT4_OFFSET     ((64 * 4) + (64 *  3))
-#define TOTP_SLOT5_OFFSET     ((64 * 4) + (64 *  4))
-#define TOTP_SLOT6_OFFSET     ((64 * 4) + (64 *  5))
-#define TOTP_SLOT7_OFFSET     ((64 * 4) + (64 *  6))
-#define TOTP_SLOT8_OFFSET     ((64 * 4) + (64 *  7))
-#define TOTP_SLOT9_OFFSET     ((64 * 4) + (64 *  8))
-#define TOTP_SLOT10_OFFSET    ((64 * 4) + (64 *  9))
-#define TOTP_SLOT11_OFFSET    ((64 * 4) + (64 * 10))
-#define TOTP_SLOT12_OFFSET    ((64 * 4) + (64 * 11))
-#define TOTP_SLOT13_OFFSET    ((64 * 4) + (64 * 12))
-#define TOTP_SLOT14_OFFSET    ((64 * 4) + (64 * 13))
-#define TOTP_SLOT15_OFFSET    ((64 * 4) + (64 * 14))
-#define TOTP_SLOT16_OFFSET    ((64 * 4) + (64 * 15))
+#define HOTP_SLOT1_OFFSET     (SLOT_SIZE * 1)
+#define HOTP_SLOT2_OFFSET     (SLOT_SIZE * 2)
+#define HOTP_SLOT3_OFFSET     (SLOT_SIZE * 3)
 
-// End of data = ((64 * 4) + (64 * 16)) = 1280 >= 3 flash page
+#define TOTP_SLOT1_OFFSET     ((SLOT_SIZE * 4) + (SLOT_SIZE *  0))
+#define TOTP_SLOT2_OFFSET     ((SLOT_SIZE * 4) + (SLOT_SIZE *  1))
+#define TOTP_SLOT3_OFFSET     ((SLOT_SIZE * 4) + (SLOT_SIZE *  2))
+#define TOTP_SLOT4_OFFSET     ((SLOT_SIZE * 4) + (SLOT_SIZE *  3))
+#define TOTP_SLOT5_OFFSET     ((SLOT_SIZE * 4) + (SLOT_SIZE *  4))
+#define TOTP_SLOT6_OFFSET     ((SLOT_SIZE * 4) + (SLOT_SIZE *  5))
+#define TOTP_SLOT7_OFFSET     ((SLOT_SIZE * 4) + (SLOT_SIZE *  6))
+#define TOTP_SLOT8_OFFSET     ((SLOT_SIZE * 4) + (SLOT_SIZE *  7))
+#define TOTP_SLOT9_OFFSET     ((SLOT_SIZE * 4) + (SLOT_SIZE *  8))
+#define TOTP_SLOT10_OFFSET    ((SLOT_SIZE * 4) + (SLOT_SIZE *  9))
+#define TOTP_SLOT11_OFFSET    ((SLOT_SIZE * 4) + (SLOT_SIZE * 10))
+#define TOTP_SLOT12_OFFSET    ((SLOT_SIZE * 4) + (SLOT_SIZE * 11))
+#define TOTP_SLOT13_OFFSET    ((SLOT_SIZE * 4) + (SLOT_SIZE * 12))
+#define TOTP_SLOT14_OFFSET    ((SLOT_SIZE * 4) + (SLOT_SIZE * 13))
+#define TOTP_SLOT15_OFFSET    ((SLOT_SIZE * 4) + (SLOT_SIZE * 14))
+#define TOTP_SLOT16_OFFSET    ((SLOT_SIZE * 4) + (SLOT_SIZE * 15))
 
+// End of data = ((128 * 4) + (128 * 16)) = 2560 >= 5 flash page
 
 #define SLOT_TYPE_OFFSET     0
 #define SLOT_NAME_OFFSET     1
 #define SECRET_OFFSET       16
-#define CONFIG_OFFSET       36
-#define TOKEN_ID_OFFSET     37
-#define INTERVAL_OFFSET     50
+#define CONFIG_OFFSET       56
+#define TOKEN_ID_OFFSET     57
+#define INTERVAL_OFFSET     70
 
 #define TIME_OFFSET          4
 
@@ -149,7 +156,7 @@ extern u32 hotp_slot_counters[NUMBER_OF_HOTP_SLOTS];
 extern u32 hotp_slot_offsets[NUMBER_OF_HOTP_SLOTS];
 extern u32 totp_slot_offsets[NUMBER_OF_TOTP_SLOTS + 1];
 
-extern u8 page_buffer[FLASH_PAGE_SIZE * 3];
+extern u8 page_buffer[FLASH_PAGE_SIZE * 5];
 
 extern u64 current_time;
 

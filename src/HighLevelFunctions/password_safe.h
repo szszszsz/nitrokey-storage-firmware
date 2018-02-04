@@ -35,7 +35,7 @@ void IBN_PWS_Tests (unsigned char nParamsGet_u8, unsigned char CMD_u8, unsigned 
 
 #define FLASH_START             0x80000000
 #define PWS_FLASH_START_PAGE    510
-#define PWS_FLASH_START_ADDRESS (0x80000000 + PWS_FLASH_START_PAGE * FLASH_PAGE_SIZE + (512*0)) // 0x8003FC00
+#define PWS_FLASH_START_ADDRESS (FLASH_START + PWS_FLASH_START_PAGE * FLASH_PAGE_SIZE + (512*0)) // 0x80040000
 
 
 #define PWS_SLOT_COUNT            16

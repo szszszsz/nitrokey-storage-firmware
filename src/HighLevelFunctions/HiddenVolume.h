@@ -29,17 +29,17 @@
 
 /* Storage description */
 
-#define FLASH_PAGE_SIZE       512   // AVR
+#define FLASH_PAGE_SIZE       512   		// AVR
 #define FLASH_START           0x80000000    // AVR
 
 
 
-#define HV_FLASH_START_PAGE     498
+#define HV_FLASH_START_PAGE     494
 #define HV_MAGIC_NUMBER_SIZE    4
 #define HV_SALT_SIZE            32
-#define HV_MAGIC_NUMBER_ADDRESS (FLASH_START             + HV_FLASH_START_PAGE * FLASH_PAGE_SIZE)   // 0x8003e400
-#define HV_SALT_START_ADDRESS   (HV_MAGIC_NUMBER_ADDRESS + HV_MAGIC_NUMBER_SIZE)    // 0x8003e404
-#define HV_SLOT_START_ADDRESS   (HV_SALT_START_ADDRESS   + HV_SALT_SIZE)    // 0x8003e424
+#define HV_MAGIC_NUMBER_ADDRESS (FLASH_START             + HV_FLASH_START_PAGE * FLASH_PAGE_SIZE)   // 0x8003dc00
+#define HV_SALT_START_ADDRESS   (HV_MAGIC_NUMBER_ADDRESS + HV_MAGIC_NUMBER_SIZE)    				// 0x8003dc04
+#define HV_SLOT_START_ADDRESS   (HV_SALT_START_ADDRESS   + HV_SALT_SIZE)    						// 0x8003dc24
 #define HV_SLOT_SIZE            64  // Byte
 #define HV_SLOT_COUNT           4   // 4 Slots a 128 byte = 512 byte
 

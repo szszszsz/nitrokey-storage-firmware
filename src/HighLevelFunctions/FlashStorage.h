@@ -44,6 +44,7 @@ u8 ReadMatrixColumsUserPWFromUserPage (u8 * data);
 u8 Read_ReadWriteStatusEncryptedVolume_u8 (void);
 u8 Write_ReadWriteStatusEncryptedVolume_u8 (u8 NewStatus_u8);
 
+
 u8 Read_ReadWriteStatusUncryptedVolume_u8 (void);
 u8 Write_ReadWriteStatusUncryptedVolume_u8 (u8 NewStatus_u8);
 u8 WriteDatetime (u32 Datetime_u32);
