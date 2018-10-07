@@ -914,6 +914,55 @@ u8 text[20];
     return err; // no error
 }
 
+s32 validate_code_from_hotp_slot(u8 slot_number, u32 code_to_verify) {
+	const s32 RET_GENERAL_ERROR = -1;
+	const s32 RET_CODE_NOT_VALID = -2;
+
+	u32 result;
+	u8 config;
+	u8 generated_hotp_code_length = 6;
+	FLASH_Status err;
+	s32 calculated_code;
+
+	if (slot_number >= NUMBER_OF_HOTP_SLOTS)
+		return RET_GENERAL_ERROR;
+
+    config = get_hotp_slot_config (slot_number);
+
+    if (config & (1 << SLOT_CONFIG_DIGITS))
+    	generated_hotp_code_length = 8;
+
+    result = *((u8 *) hotp_slots[slot_number]);
+
+    if (result == 0xFF) // unprogrammed slot
+        return RET_GENERAL_ERROR;
+
+
+	const u64 counter = get_counter_value(hotp_slot_counters[slot_number]);
+
+	u32 counter_offset = 0;
+	const u32 calculate_ahead_values = 10;
+
+	for (counter_offset = 0; counter_offset < calculate_ahead_values; counter_offset++)
+	{
+		calculated_code = get_hotp_value(counter + counter_offset, (hotp_slots[slot_number] + SECRET_OFFSET), 20, generated_hotp_code_length);
+		if (calculated_code == code_to_verify)
+			break;
+	}
+
+	if (counter_offset < calculate_ahead_values) {
+		//increment the counter for the lacking values, plus one to be ready for next validation
+		u32 i;
+		for (i = 0; i < counter_offset + 1; i++) {
+			err = (FLASH_Status) increment_counter_page(hotp_slot_counters[slot_number]);
+			if (err != FLASH_COMPLETE)
+				return RET_GENERAL_ERROR;
+		}
+		return counter_offset;
+	}
+
+	return RET_CODE_NOT_VALID;
+}
 
 /*******************************************************************************
 

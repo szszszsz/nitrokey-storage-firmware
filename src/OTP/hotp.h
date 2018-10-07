@@ -171,6 +171,7 @@ u8 set_time_value (u32 time);
 u8 set_counter_value (u32 addr, u64 counter);
 u32 get_code_from_hotp_slot (u8 slot);
 u8 increment_counter_page (u32 addr);
+s32 validate_code_from_hotp_slot(u8 slot_number, u32 code_to_verify);
 void write_to_slot (u8 * data, u16 offset, u16 len);
 void backup_data (u8 * data, u16 len, u32 addr);
 u8 check_backups (void);
