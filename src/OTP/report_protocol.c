@@ -854,6 +854,12 @@ u8 text[10];
                 CI_StringOut ("Get CMD_FACTORY_RESET\r\n");
                 cmd_getFactoryReset (report, output);
                 break;
+
+            case CMD_VERIFY_OTP_CODE:
+            	CI_StringOut ("Get CMD_VERIFY_OTP_CODE\r\n");
+            	cmd_verify_code (report, output);
+            	break;
+
             case CMD_RESET_STICK :
                 CI_StringOut ("Get CMD_RESET_STICK\r\n");
 //                cmd_getResetStick (report, output);
@@ -1754,6 +1760,30 @@ u8 is_programmed = *((u8 *) (totp_slots[slot_no]));
     return 0;
 }
 
+
+u8 cmd_verify_code(u8 *report, u8 *output) {
+  const u8 HOTP_VERIFY_SLOT_NO = 3;
+  u8 slot_no = HOTP_VERIFY_SLOT_NO;
+
+  u32 input = getu32(report + CMD_VC_CODE_OFFSET);
+  u32 result = 0;
+
+  slot_no = slot_no & 0x0F;
+
+  u8 is_programmed = *((u8 *) (hotp_slots[slot_no]));
+
+  if (0x01 != is_programmed) {
+    output[OUTPUT_CMD_STATUS_OFFSET] = CMD_STATUS_SLOT_NOT_PROGRAMMED;
+    return 1;
+  }
+  result = validate_code_from_hotp_slot(slot_no, input);
+
+  //wink_correct(code_correct);
+  output[OUTPUT_CMD_RESULT_OFFSET] = (u8) (result >= 0 ? 1 : 0);
+  output[OUTPUT_CMD_RESULT_OFFSET+1] = (u8) result;
+
+  return 0;
+}
 /*******************************************************************************
 
   cmd_write_config
@@ -2023,6 +2053,8 @@ u8 cmd_lock_device (u8 * report, u8 * output)
     authorized_crc = 0xFFFFFFFF;
     authorized_user_crc = 0xFFFFFFFF;
     authorized_user_crc_set=0;
+
+
 
     return (0);
 }

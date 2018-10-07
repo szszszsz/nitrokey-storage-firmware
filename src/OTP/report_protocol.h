@@ -59,6 +59,7 @@
 #define CMD_UNLOCK_USER_PASSWORD          0x11
 #define CMD_LOCK_DEVICE                   0x12
 #define CMD_FACTORY_RESET                 0x13
+#define CMD_VERIFY_OTP_CODE               0x18
 
 
 #define CMD_GET_PW_SAFE_SLOT_STATUS       0x60
@@ -284,6 +285,18 @@ void Stick20HIDSendDebugData (u8 * output);
 #define CMD_GC_INTERVAL_OFFSET        18
 
 /*
+   CMD_VERIFY_CODE
+
+   report: TODO Update
+
+   output: TODO Update
+
+ */
+
+#define CMD_VC_CODE_OFFSET      	   1
+
+
+/*
    CMD_WRITE_CONFIG
 
    report: 1b command type 1b Numlock slot 1b Capslock slot 1b Scrolllock slot
@@ -323,6 +336,7 @@ u8 cmd_write_to_slot (u8 * report, u8 * output);
 u8 cmd_read_slot_name (u8 * report, u8 * output);
 u8 cmd_read_slot (u8 * report, u8 * output);
 u8 cmd_get_code (u8 * report, u8 * output);
+u8 cmd_verify_code(u8 *report, u8 *output);
 u8 cmd_write_config (u8 * report, u8 * output);
 u8 cmd_erase_slot (u8 * report, u8 * output);
 u8 cmd_first_authenticate (u8 * report, u8 * output);
