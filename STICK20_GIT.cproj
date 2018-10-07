@@ -2,7 +2,7 @@
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectVersion>6.1</ProjectVersion>
+    <ProjectVersion>7.0</ProjectVersion>
     <ToolchainName>com.Atmel.AVRGCC32.C</ToolchainName>
     <ProjectGuid>b19eb321-4623-42d6-8259-b5d025dafc16</ProjectGuid>
     <Name>USB_MASS_DEBUG</Name>
@@ -24,7 +24,7 @@
     <UncachedRange />
     <OverrideVtorValue>exception_table</OverrideVtorValue>
     <BootSegment>2</BootSegment>
-    <eraseonlaunchrule>4</eraseonlaunchrule>
+    <eraseonlaunchrule>0</eraseonlaunchrule>
     <AsfFrameworkConfig>
       <framework-data xmlns="">
         <options />
@@ -41,20 +41,28 @@
     <com_atmel_avrdbg_tool_jtagicemkii>
       <ToolOptions>
         <InterfaceProperties>
-          <JtagEnableExtResetOnStartSession>false</JtagEnableExtResetOnStartSession>
+          <JtagEnableExtResetOnStartSession>true</JtagEnableExtResetOnStartSession>
           <JtagInChain>false</JtagInChain>
           <JtagDevicesBefore>0</JtagDevicesBefore>
           <JtagDevicesAfter>0</JtagDevicesAfter>
           <JtagInstrBitsBefore>0</JtagInstrBitsBefore>
           <JtagInstrBitsAfter>0</JtagInstrBitsAfter>
           <JtagDbgClock>0</JtagDbgClock>
+          <JtagSelectedDeviceIndexInChain>0</JtagSelectedDeviceIndexInChain>
+          <JtagDaisyChainDevices>
+          </JtagDaisyChainDevices>
         </InterfaceProperties>
         <InterfaceName>JTAG</InterfaceName>
       </ToolOptions>
       <ToolType>com.atmel.avrdbg.tool.jtagicemkii</ToolType>
-      <ToolNumber>00B000002983</ToolNumber>
+      <ToolNumber>00B000002569</ToolNumber>
       <ToolName>JTAGICE mkII</ToolName>
     </com_atmel_avrdbg_tool_jtagicemkii>
+    <preserveEEPROM>true</preserveEEPROM>
+    <ResetRule>0</ResetRule>
+    <EraseKey />
+    <avrtoolserialnumber>00B000002569</avrtoolserialnumber>
+    <avrdeviceexpectedsignature>0x0</avrdeviceexpectedsignature>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <ToolchainSettings>
@@ -112,6 +120,7 @@
             <Value>../src/Tools</Value>
             <Value>../src/USER_INTERFACE</Value>
             <Value>../src/SOFTWARE_FRAMEWORK/SERVICES/USB/CLASS/HID</Value>
+            <Value>%24(PackRepoDir)\atmel\UC3A_DFP\1.0.53\include\AT32UC3A3256S</Value>
           </ListValues>
         </avr32gcc.compiler.directories.IncludePaths>
         <avr32gcc.compiler.optimization.OtherFlags>-fdata-sections</avr32gcc.compiler.optimization.OtherFlags>
@@ -195,6 +204,7 @@
             <Value>../src/SOFTWARE_FRAMEWORK/DRIVERS/ADC</Value>
             <Value>../src/Tools</Value>
             <Value>../src/USER_INTERFACE</Value>
+            <Value>%24(PackRepoDir)\atmel\UC3A_DFP\1.0.53\include\AT32UC3A3256S</Value>
           </ListValues>
         </avr32gcc.assembler.general.IncludePaths>
         <avr32gcc.assembler.general.AnounceVersion>false</avr32gcc.assembler.general.AnounceVersion>
@@ -236,6 +246,7 @@
             <Value>../src/SOFTWARE_FRAMEWORK/DRIVERS/ADC</Value>
             <Value>../src/Tools</Value>
             <Value>../src/USER_INTERFACE</Value>
+            <Value>%24(PackRepoDir)\atmel\UC3A_DFP\1.0.53\include\AT32UC3A3256S</Value>
           </ListValues>
         </avr32gcc.preprocessingassembler.general.IncludePaths>
         <avr32gcc.preprocessingassembler.general.SuppressWarnings>false</avr32gcc.preprocessingassembler.general.SuppressWarnings>
@@ -299,6 +310,7 @@
             <Value>../src/SOFTWARE_FRAMEWORK/DRIVERS/ADC</Value>
             <Value>../src/Tools</Value>
             <Value>../src/SOFTWARE_FRAMEWORK/SERVICES/USB/CLASS/HID</Value>
+            <Value>%24(PackRepoDir)\atmel\UC3A_DFP\1.0.53\include\AT32UC3A3256S</Value>
           </ListValues>
         </avr32gcc.compiler.directories.IncludePaths>
         <avr32gcc.compiler.optimization.OtherFlags>-fdata-sections</avr32gcc.compiler.optimization.OtherFlags>
@@ -382,6 +394,7 @@
             <Value>../src/SOFTWARE_FRAMEWORK/DRIVERS/ADC</Value>
             <Value>../src/Tools</Value>
             <Value>../src/USER_INTERFACE</Value>
+            <Value>%24(PackRepoDir)\atmel\UC3A_DFP\1.0.53\include\AT32UC3A3256S</Value>
           </ListValues>
         </avr32gcc.assembler.general.IncludePaths>
         <avr32gcc.assembler.general.AnounceVersion>false</avr32gcc.assembler.general.AnounceVersion>
@@ -423,6 +436,7 @@
             <Value>../src/SOFTWARE_FRAMEWORK/DRIVERS/ADC</Value>
             <Value>../src/Tools</Value>
             <Value>../src/USER_INTERFACE</Value>
+            <Value>%24(PackRepoDir)\atmel\UC3A_DFP\1.0.53\include\AT32UC3A3256S</Value>
           </ListValues>
         </avr32gcc.preprocessingassembler.general.IncludePaths>
         <avr32gcc.preprocessingassembler.general.SuppressWarnings>false</avr32gcc.preprocessingassembler.general.SuppressWarnings>
@@ -443,10 +457,16 @@
     <Compile Include="src\global.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\mass_storage_example.c">
+    <Compile Include="src\HighLevelFunctions\password_safe.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\mass_storage_example.h">
+    <Compile Include="src\HighLevelFunctions\password_safe.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\nitrokey.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\nitrokey.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\tools.c">
@@ -1274,6 +1294,12 @@
       <SubType>compile</SubType>
     </Compile>
     <Folder Include="src\USB_CCID" />
+    <Compile Include="src\Tools\xxHash.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\Tools\xxHash.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\USB_CCID\USB_CCID.c">
       <SubType>compile</SubType>
     </Compile>
