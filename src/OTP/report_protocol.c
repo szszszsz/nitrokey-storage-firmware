@@ -1776,7 +1776,7 @@ u8 cmd_verify_code(u8 *report, u8 *output) {
     output[OUTPUT_CMD_STATUS_OFFSET] = CMD_STATUS_SLOT_NOT_PROGRAMMED;
     return 1;
   }
-  result = validate_code_from_hotp_slot(slot_no, input);
+ // result = validate_code_from_hotp_slot(slot_no, input);
 
   //wink_correct(code_correct);
   output[OUTPUT_CMD_RESULT_OFFSET] = (u8) (result >= 0 ? 1 : 0);
