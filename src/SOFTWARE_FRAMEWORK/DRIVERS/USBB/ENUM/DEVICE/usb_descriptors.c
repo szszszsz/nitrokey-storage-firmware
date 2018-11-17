@@ -61,7 +61,7 @@
 #define KEYBOARD_FEATURE_COUNT                64
 
 const U8 usb_hid_report_descriptor_keyboard[USB_HID_REPORT_DESC_KEYBOARD] = {
-    0x06, 0xd0, 0xf1, // USAGE_PAGE (Generic Desktop)
+    0x06, 0x00, 0xff, // USAGE_PAGE (Generic Desktop)
     0x09, 0x00, // USAGE (Keyboard)
     0xa1, 0x01, // COLLECTION (Application)
     /*

@@ -262,7 +262,7 @@
 #define KB_NB_ENDPOINT         1    // ! The number of endpoints this interface has
 #define KB_INTERFACE_CLASS     HID_CLASS    // ! HID Class
 #define KB_INTERFACE_SUB_CLASS NO_SUBCLASS  // !
-#define KB_INTERFACE_PROTOCOL  KEYBOARD_PROTOCOL    // !
+#define KB_INTERFACE_PROTOCOL  0// KEYBOARD_PROTOCOL    // !
 #define KB_INTERFACE_INDEX     0
 
             // Keyboard HID descriptor
