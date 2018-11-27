@@ -92,40 +92,42 @@ typedef enum
 
 #define FLASH_START            0x80000000
 #define OTP_FLASH_START_PAGE   500
-#define SLOTS_ADDRESS         (0x80000000 + OTP_FLASH_START_PAGE * FLASH_PAGE_SIZE + (512*0))   // 0x8003e800
-#define SLOT1_COUNTER_ADDRESS (0x80000000 + OTP_FLASH_START_PAGE * FLASH_PAGE_SIZE + (512*3))   // 0x8003
-#define SLOT2_COUNTER_ADDRESS (0x80000000 + OTP_FLASH_START_PAGE * FLASH_PAGE_SIZE + (512*4))   // 0x8003
-#define SLOT3_COUNTER_ADDRESS (0x80000000 + OTP_FLASH_START_PAGE * FLASH_PAGE_SIZE + (512*5))   // 0x8003
-#define BACKUP_PAGE_ADDRESS   (0x80000000 + OTP_FLASH_START_PAGE * FLASH_PAGE_SIZE + (512*6))   // (3 Pages) 0x8003
-#define TIME_ADDRESS          (0x80000000 + OTP_FLASH_START_PAGE * FLASH_PAGE_SIZE + (512*9))   //
+#define SLOTS_ADDRESS         (FLASH_START + OTP_FLASH_START_PAGE * FLASH_PAGE_SIZE + (FLASH_PAGE_SIZE*0))   // 0x8003e800
+#define SLOT1_COUNTER_ADDRESS (FLASH_START + OTP_FLASH_START_PAGE * FLASH_PAGE_SIZE + (FLASH_PAGE_SIZE*3))   // 0x8003
+#define SLOT2_COUNTER_ADDRESS (FLASH_START + OTP_FLASH_START_PAGE * FLASH_PAGE_SIZE + (FLASH_PAGE_SIZE*4))   // 0x8003
+#define SLOT3_COUNTER_ADDRESS (FLASH_START + OTP_FLASH_START_PAGE * FLASH_PAGE_SIZE + (FLASH_PAGE_SIZE*5))   // 0x8003
+#define BACKUP_PAGE_ADDRESS   (FLASH_START + OTP_FLASH_START_PAGE * FLASH_PAGE_SIZE + (FLASH_PAGE_SIZE*6))   // (3 Pages) 0x8003
+#define TIME_ADDRESS          (FLASH_START + OTP_FLASH_START_PAGE * FLASH_PAGE_SIZE + (FLASH_PAGE_SIZE*9))   //
 
 // OTP block = 3 flash blocks = 3*512 byte
-#define BACKUP_ADDRESS_OFFSET ((512 * 3) - 12)  // 500 - no flash block addr
-#define BACKUP_LENGTH_OFFSET  ((512 * 3) -  8)  // 504 - no flash block addr
-#define BACKUP_OK_OFFSET      ((512 * 3) -  6)  // 506 - no flash block addr
+#define BACKUP_ADDRESS_OFFSET ((FLASH_PAGE_SIZE * 3) - 12)  // 500 - no flash block addr
+#define BACKUP_LENGTH_OFFSET  ((FLASH_PAGE_SIZE * 3) -  8)  // 504 - no flash block addr
+#define BACKUP_OK_OFFSET      ((FLASH_PAGE_SIZE * 3) -  6)  // 506 - no flash block addr
 
-#define GLOBAL_CONFIG_OFFSET  (64 * 0)
+#define OTP_SLOT_SIZE         64
 
-#define HOTP_SLOT1_OFFSET     (64 * 1)
-#define HOTP_SLOT2_OFFSET     (64 * 2)
-#define HOTP_SLOT3_OFFSET     (64 * 3)
+#define GLOBAL_CONFIG_OFFSET  (OTP_SLOT_SIZE * 0)
 
-#define TOTP_SLOT1_OFFSET     ((64 * 4) + (64 *  0))
-#define TOTP_SLOT2_OFFSET     ((64 * 4) + (64 *  1))
-#define TOTP_SLOT3_OFFSET     ((64 * 4) + (64 *  2))
-#define TOTP_SLOT4_OFFSET     ((64 * 4) + (64 *  3))
-#define TOTP_SLOT5_OFFSET     ((64 * 4) + (64 *  4))
-#define TOTP_SLOT6_OFFSET     ((64 * 4) + (64 *  5))
-#define TOTP_SLOT7_OFFSET     ((64 * 4) + (64 *  6))
-#define TOTP_SLOT8_OFFSET     ((64 * 4) + (64 *  7))
-#define TOTP_SLOT9_OFFSET     ((64 * 4) + (64 *  8))
-#define TOTP_SLOT10_OFFSET    ((64 * 4) + (64 *  9))
-#define TOTP_SLOT11_OFFSET    ((64 * 4) + (64 * 10))
-#define TOTP_SLOT12_OFFSET    ((64 * 4) + (64 * 11))
-#define TOTP_SLOT13_OFFSET    ((64 * 4) + (64 * 12))
-#define TOTP_SLOT14_OFFSET    ((64 * 4) + (64 * 13))
-#define TOTP_SLOT15_OFFSET    ((64 * 4) + (64 * 14))
-#define TOTP_SLOT16_OFFSET    ((64 * 4) + (64 * 15))
+#define HOTP_SLOT1_OFFSET     (OTP_SLOT_SIZE * 1)
+#define HOTP_SLOT2_OFFSET     (OTP_SLOT_SIZE * 2)
+#define HOTP_SLOT3_OFFSET     (OTP_SLOT_SIZE * 3)
+
+#define TOTP_SLOT1_OFFSET     ((OTP_SLOT_SIZE * 4) + (OTP_SLOT_SIZE *  0))
+#define TOTP_SLOT2_OFFSET     ((OTP_SLOT_SIZE * 4) + (OTP_SLOT_SIZE *  1))
+#define TOTP_SLOT3_OFFSET     ((OTP_SLOT_SIZE * 4) + (OTP_SLOT_SIZE *  2))
+#define TOTP_SLOT4_OFFSET     ((OTP_SLOT_SIZE * 4) + (OTP_SLOT_SIZE *  3))
+#define TOTP_SLOT5_OFFSET     ((OTP_SLOT_SIZE * 4) + (OTP_SLOT_SIZE *  4))
+#define TOTP_SLOT6_OFFSET     ((OTP_SLOT_SIZE * 4) + (OTP_SLOT_SIZE *  5))
+#define TOTP_SLOT7_OFFSET     ((OTP_SLOT_SIZE * 4) + (OTP_SLOT_SIZE *  6))
+#define TOTP_SLOT8_OFFSET     ((OTP_SLOT_SIZE * 4) + (OTP_SLOT_SIZE *  7))
+#define TOTP_SLOT9_OFFSET     ((OTP_SLOT_SIZE * 4) + (OTP_SLOT_SIZE *  8))
+#define TOTP_SLOT10_OFFSET    ((OTP_SLOT_SIZE * 4) + (OTP_SLOT_SIZE *  9))
+#define TOTP_SLOT11_OFFSET    ((OTP_SLOT_SIZE * 4) + (OTP_SLOT_SIZE * 10))
+#define TOTP_SLOT12_OFFSET    ((OTP_SLOT_SIZE * 4) + (OTP_SLOT_SIZE * 11))
+#define TOTP_SLOT13_OFFSET    ((OTP_SLOT_SIZE * 4) + (OTP_SLOT_SIZE * 12))
+#define TOTP_SLOT14_OFFSET    ((OTP_SLOT_SIZE * 4) + (OTP_SLOT_SIZE * 13))
+#define TOTP_SLOT15_OFFSET    ((OTP_SLOT_SIZE * 4) + (OTP_SLOT_SIZE * 14))
+#define TOTP_SLOT16_OFFSET    ((OTP_SLOT_SIZE * 4) + (OTP_SLOT_SIZE * 15))
 
 // End of data = ((64 * 4) + (64 * 16)) = 1280 >= 3 flash page
 
