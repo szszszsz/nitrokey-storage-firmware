@@ -140,6 +140,7 @@ typedef enum
 #define INTERVAL_OFFSET     70
 
 #define TIME_OFFSET          4
+#define SECRET_LEN          40
 
 
 #define TOKEN_PER_FLASHPAGE        (FLASH_PAGE_SIZE-8)

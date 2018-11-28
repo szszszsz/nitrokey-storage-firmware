@@ -227,7 +227,7 @@ u32 totp_slot_offsets[NUMBER_OF_TOTP_SLOTS + 1] = {
     TOTP_SLOT16_OFFSET
 };
 
-u8 page_buffer[FLASH_PAGE_SIZE * 3];
+u8 page_buffer[FLASH_PAGE_SIZE * 5];
 
 u64 current_time = 0x0;
 
@@ -973,7 +973,7 @@ u32 c;
     }
 #endif
 
-    result = get_hotp_value (counter, (u8 *) (hotp_slots[slot] + SECRET_OFFSET), 20, len);
+    result = get_hotp_value (counter, (u8 *) (hotp_slots[slot] + SECRET_OFFSET), SECRET_LEN, len);
 
 
     err = increment_counter_page (hotp_slot_counters[slot]);
@@ -1093,7 +1093,7 @@ u8  Found;
 
     // copy entire page to ram
 u8* page = (u8 *) SLOTS_ADDRESS;
-    memcpy (page_buffer, page, FLASH_PAGE_SIZE * 3);
+    memcpy (page_buffer, page, FLASH_PAGE_SIZE * 5);
 
     // make changes to page
     memcpy (page_buffer + offset, data, len);
@@ -1104,7 +1104,7 @@ u8* page = (u8 *) SLOTS_ADDRESS;
     // Check if the secret from the tool is empty and if it is use the old secret
     // Secret could begin with 0x00, so checking the whole secret before keeping the old one in mandatory
     Found = FALSE;
-    for (i=0;i<20;i++)
+    for (i=0;i<SECRET_LEN;i++)
     {
       if (0 != secret[i])
       {
@@ -1115,17 +1115,17 @@ u8* page = (u8 *) SLOTS_ADDRESS;
 
     if (FALSE == Found)
     {
-        memcpy (data + SECRET_OFFSET, page_buffer + offset + SECRET_OFFSET, 20);
+        memcpy (data + SECRET_OFFSET, page_buffer + offset + SECRET_OFFSET, SECRET_LEN);
     }
 
     // write page to backup location
-    backup_data (page_buffer, FLASH_PAGE_SIZE * 3, SLOTS_ADDRESS);
+    backup_data (page_buffer, FLASH_PAGE_SIZE * 5, SLOTS_ADDRESS);
 
     // Clear flash mem
     // flashc_memset8 ((void*)SLOTS_ADDRESS,0xFF,FLASH_PAGE_SIZE*3,TRUE);
 
     // write page to regular location
-    write_data_to_flash (page_buffer, FLASH_PAGE_SIZE * 3, SLOTS_ADDRESS);
+    write_data_to_flash (page_buffer, FLASH_PAGE_SIZE * 5, SLOTS_ADDRESS);
 
     // Init backup block
     dummy_u16 = 0x4F4B;
@@ -1285,7 +1285,7 @@ time_t now;
         len = 8;
 
     // result= get_hotp_value(challenge,(u8 *)(totp_slots[slot]+SECRET_OFFSET),20,len);
-    result = get_hotp_value (time_min, (u8 *) (totp_slots[slot] + SECRET_OFFSET), 20, len);
+    result = get_hotp_value (time_min, (u8 *) (totp_slots[slot] + SECRET_OFFSET), SECRET_LEN, len);
 
     return result;
 
