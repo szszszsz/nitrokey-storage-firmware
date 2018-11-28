@@ -96,10 +96,15 @@
    OTP configuration slot
 
 
-   Slot size 64 byte
+   Slot size 128 byte
 
-   Contain the parameter data - 50 data byte Start Description SLOT_TYPE_OFFSET 0 1 byte slot type TOTP, HOTP SLOT_NAME_OFFSET 1 15 byte slot name
-   SECRET_OFFSET 16 20 byte secret key CONFIG_OFFSET 36 1 byte config byte TOKEN_ID_OFFSET 37 12 byte token ID
+   Contain the parameter data - 70 data byte
+   Start Description
+   SLOT_TYPE_OFFSET 		0 	1 byte 	slot type TOTP,
+   HOTP SLOT_NAME_OFFSET 	1 	15 byte slot name
+   SECRET_OFFSET 			16 	40 byte secret key
+   CONFIG_OFFSET 			56 	1 byte 	config byte
+   TOKEN_ID_OFFSET 			57 	12 byte token ID
 
    Stick 2.x
 
@@ -116,10 +121,16 @@
    TOTP_SLOT15 1376 1455 TOTP_SLOT16 1456 1535
 
 
-   Slot size 64 byte
+   Slot size 128 byte
 
-   Contain the parameter data - 50 data byte Start Description SLOT_TYPE_OFFSET 0 1 byte slot type TOTP, HOTP SLOT_NAME_OFFSET 1 15 byte slot name
-   SECRET_OFFSET 16 20 byte secret key CONFIG_OFFSET 36 1 byte config byte TOKEN_ID_OFFSET 37 12 byte token ID INTERVAL_OFFSET 50 8 byte (Only HOPT)
+   Contain the parameter data - 70 data byte
+   Start Description
+   SLOT_TYPE_OFFSET 		0 	1 byte 		slot type TOTP,
+   HOTP SLOT_NAME_OFFSET 	1 	15 byte 	slot name
+   SECRET_OFFSET 			16 	40 byte 	secret key
+   CONFIG_OFFSET 			56 	1 byte 		config byte
+   TOKEN_ID_OFFSET 			57 	12 byte 	token ID
+   INTERVAL_OFFSET 			70 	8 byte 		(Only HOTP)
 
 
    OTP counter storage slot
@@ -293,7 +304,7 @@ u32 getu32 (u8 * array)
 u32 result = 0;
 s8 i = 0;
 
-
+	// compose u32 from 4 consecutive bytes at the supplied address (big-endian)
     for (i = 3; i >= 0; i--)
     {
         result <<= 8;
@@ -323,6 +334,7 @@ u64 getu64 (u8 * array)
 u64 result = 0;
 s8 i = 0;
 
+	// compose u32 from 8 consecutive bytes at the supplied address (big-endian)
     for (i = 7; i >= 0; i--)
     {
         result <<= 8;
@@ -466,7 +478,7 @@ void write_data_to_flash (u8 * data, u16 len, u32 addr)
 
 u32 get_hotp_value (u64 counter, u8 * secret, u8 secret_length, u8 len)
 {
-u8 hmac_result[20];
+u8 hmac_result[SECRET_LENGTH];
 u64 c = endian_swap (counter);
 
     LED_GreenOn ();
@@ -625,11 +637,13 @@ int i, flag = 0;
 u32 time = 0;
 u32* p;
 
+	// Time not set
     if (getu32 (TIME_ADDRESS) == 0xffffffff)
     {
         return 0xffffffff;
     }
 
+    // wear levelling spreads the timestamps over a large space in memory. Find current timestamp and extract.
     for (i = 1; i < 32; i++)
     {
         if (getu32 (TIME_ADDRESS + TIME_OFFSET * i) == 0xffffffff)
@@ -975,7 +989,6 @@ u32 c;
 
     result = get_hotp_value (counter, (u8 *) (hotp_slots[slot] + SECRET_OFFSET), SECRET_LEN, len);
 
-
     err = increment_counter_page (hotp_slot_counters[slot]);
 
 #ifdef DEBUG_HOTP
@@ -1116,7 +1129,6 @@ u8* page = (u8 *) SLOTS_ADDRESS;
     if (FALSE == Found)
     {
         memcpy (data + SECRET_OFFSET, page_buffer + offset + SECRET_OFFSET, SECRET_LEN);
-    }
 
     // write page to backup location
     backup_data (page_buffer, FLASH_PAGE_SIZE * 5, SLOTS_ADDRESS);

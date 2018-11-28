@@ -68,9 +68,12 @@ typedef enum
 
 
 /*
-   slot structure: 1b 0x01 if slot is used (programmed) 15b slot name 20b secret 1b configuration flags: MSB [x|x|x|x|x|send token id|send enter
-   after code?|no. of digits 6/8] LSB 12b token id 1b keyboard layout 2b TOTP interval value
-
+   slot structure:
+   1b 0x01 if slot is used (programmed)
+   15b slot name
+   20b secret
+   1b configuration flags: MSB [x|x|x|x|x|send token id|send enter after code?|no. of digits 6/8] LSB
+   12b token id 1b keyboard layout 2b TOTP interval value
  */
 
 #define SLOT_CONFIG_DIGITS 0
@@ -82,7 +85,9 @@ typedef enum
 /*
    global config slot:
 
-   1b slot sent after numlock 1b slot sent after caps lock 1b slot sent after scroll lock
+   1b slot sent after numlock
+   1b slot sent after caps lock
+   1b slot sent after scroll lock
 
  */
 
@@ -131,7 +136,6 @@ typedef enum
 
 // End of data = ((128 * 4) + (128 * 16)) = 2560 >= 3 flash page
 
-
 #define SLOT_TYPE_OFFSET     0
 #define SLOT_NAME_OFFSET     1
 #define SECRET_OFFSET       16
@@ -152,7 +156,7 @@ extern u32 hotp_slot_counters[NUMBER_OF_HOTP_SLOTS];
 extern u32 hotp_slot_offsets[NUMBER_OF_HOTP_SLOTS];
 extern u32 totp_slot_offsets[NUMBER_OF_TOTP_SLOTS + 1];
 
-extern u8 page_buffer[FLASH_PAGE_SIZE * 3];
+extern u8 page_buffer[FLASH_PAGE_SIZE * 5];
 
 extern u64 current_time;
 
